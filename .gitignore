@@ -1,0 +1,23 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Node & Frontend
+node_modules/
+dist/
+build/
+.npm
+npm-debug.log*
+
+# .NET & C#
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,98 @@
+@import "tailwindcss";
+
+@layer utilities {
+  /* Ambient Dark Background with Radial Glows */
+  .bg-mesh {
+    background-color: #090d16;
+    background-image:
+      radial-gradient(
+        at 15% 15%,
+        rgba(14, 165, 233, 0.12) 0px,
+        transparent 45%
+      ),
+      radial-gradient(
+        at 85% 20%,
+        rgba(99, 102, 241, 0.12) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 50% 80%, rgba(168, 85, 247, 0.08) 0px, transparent 50%);
+    background-attachment: fixed;
+  }
+
+  /* Glassmorphic Cards with Glow on Hover */
+  .glass-card {
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(51, 65, 85, 0.6);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56, 189, 248, 0.5);
+    box-shadow: 0 16px 40px -10px rgba(14, 165, 233, 0.25);
+  }
+
+  /* Glass Navbar */
+  .glass-nav {
+    background: rgba(10, 15, 29, 0.85);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+  }
+
+  /* Vibrant Gradient Text */
+  .text-gradient {
+    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-amber {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Modern Gradient Buttons */
+  .btn-gradient {
+    background: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+    color: white;
+    font-weight: 600;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 14px 0 rgba(14, 165, 233, 0.39);
+  }
+
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+    box-shadow: 0 6px 20px rgba(14, 165, 233, 0.5);
+    transform: translateY(-1px);
+  }
+
+  .btn-gradient:active {
+    transform: translateY(0);
+  }
+
+  /* Badge styling */
+  .badge-capacity {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.5);
+    color: #94a3b8;
+  }
+
+  /* Smooth Inputs */
+  .input-modern {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(51, 65, 85, 0.8);
+    color: white;
+    transition: all 0.2s ease;
+  }
+
+  .input-modern:focus {
+    outline: none;
+    border-color: #38bdf8;
+    box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+  }
+}
