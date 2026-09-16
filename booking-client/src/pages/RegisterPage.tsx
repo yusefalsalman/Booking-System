@@ -31,22 +31,24 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className="min-h-[85vh] flex items-center justify-center px-4 py-8">
-      <div className="max-w-md w-full glass-card p-10 rounded-3xl text-white shadow-2xl">
+      <div className="max-w-md w-full hotel-card p-8 sm:p-10 rounded-3xl text-stone-900 shadow-xl">
         <div className="text-center mb-8">
-          <span className="text-3xl">✨</span>
-          <h2 className="text-3xl font-black text-white mt-2 tracking-tight">Join LuxeStay</h2>
-          <p className="text-slate-400 text-sm mt-1">Unlock seamless booking and exclusive rates</p>
+          <div className="w-12 h-12 rounded-2xl bg-stone-100 border border-stone-200 flex items-center justify-center text-xl mx-auto mb-3">
+            ✨
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">Create Account</h2>
+          <p className="text-stone-500 text-sm mt-1">Join LuxeStay to access seamless reservations and concierge service</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-950/80 border border-red-500/50 rounded-xl text-red-200 text-sm font-medium">
+          <div className="mb-6 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-sm font-medium">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
               Full Name
             </label>
             <input
@@ -54,13 +56,13 @@ export const RegisterPage: React.FC = () => {
               required
               value={fullName}
               onChange={(e) => setFullName(e.target.value)}
-              className="w-full input-modern rounded-xl px-4 py-2.5 text-sm placeholder-slate-500"
+              className="w-full input-clean rounded-xl px-4 py-2.5 text-sm placeholder-stone-400"
               placeholder="Yousef Salman"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <input
@@ -68,13 +70,13 @@ export const RegisterPage: React.FC = () => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full input-modern rounded-xl px-4 py-2.5 text-sm placeholder-slate-500"
+              className="w-full input-clean rounded-xl px-4 py-2.5 text-sm placeholder-stone-400"
               placeholder="name@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
               Password
             </label>
             <input
@@ -83,37 +85,37 @@ export const RegisterPage: React.FC = () => {
               minLength={6}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full input-modern rounded-xl px-4 py-2.5 text-sm placeholder-slate-500"
-              placeholder="At least 6 characters"
+              className="w-full input-clean rounded-xl px-4 py-2.5 text-sm placeholder-stone-400"
+              placeholder="Minimum 6 characters"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
               Account Role
             </label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full input-modern rounded-xl px-4 py-2.5 text-sm text-slate-200"
+              className="w-full input-clean rounded-xl px-4 py-2.5 text-sm text-stone-800 bg-white"
             >
-              <option value="Customer" className="bg-slate-900 text-white">Customer (Guest)</option>
-              <option value="Admin" className="bg-slate-900 text-white">Admin (Manager)</option>
+              <option value="Customer">Customer (Guest)</option>
+              <option value="Admin">Admin (Manager)</option>
             </select>
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full btn-gradient py-3 rounded-xl text-sm font-bold tracking-wide transition disabled:opacity-50 cursor-pointer shadow-lg mt-2"
+            className="w-full btn-primary py-3 rounded-xl text-sm font-semibold tracking-wide transition disabled:opacity-50 cursor-pointer shadow-xs mt-2"
           >
-            {loading ? 'Creating Account...' : 'Create Account'}
+            {loading ? 'Creating Account...' : 'Register Account'}
           </button>
         </form>
 
-        <p className="mt-8 text-center text-xs text-slate-400">
+        <p className="mt-7 text-center text-xs text-stone-500">
           Already have an account?{' '}
-          <Link to="/login" className="text-sky-400 font-semibold hover:underline">
+          <Link to="/login" className="text-stone-900 font-semibold hover:underline">
             Sign in
           </Link>
         </p>

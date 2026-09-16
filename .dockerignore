@@ -1,0 +1,14 @@
+**/.git
+**/.github
+**/.vs
+**/.vscode
+**/.idea
+**/bin
+**/obj
+**/TestResults
+**/booking-client
+**/node_modules
+Dockerfile*
+.dockerignore
+*.md
+

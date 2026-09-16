@@ -5,7 +5,7 @@ import type { Room } from '../types';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 
-// Curated luxury hotel photos for visual flair
+// Curated high-aesthetic architecture & interior photos
 const ROOM_IMAGES = [
   'https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80',
   'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80',
@@ -65,7 +65,7 @@ export const HomePage: React.FC = () => {
 
       setBookingMessage({
         type: 'success',
-        text: `🎉 Room reserved successfully! Total price: $${result.totalPrice}`,
+        text: `Suite reserved successfully! Total price: $${result.totalPrice}`,
       });
       setSelectedRoom(null);
       setCheckInDate('');
@@ -80,34 +80,34 @@ export const HomePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      {/* Hero Section */}
-      <div className="text-center max-w-2xl mx-auto mb-16">
-        <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-sky-500/10 border border-sky-500/20 text-sky-400 text-xs font-semibold mb-4">
-          <span>✨</span>
-          <span>Boutique Suites & Exceptional Stays</span>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+      {/* Editorial Hero Section */}
+      <div className="text-center max-w-2xl mx-auto mb-14">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1 rounded-full bg-stone-100 border border-stone-200/80 text-stone-700 text-xs font-semibold tracking-wide mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-orange-600"></span>
+          <span>Boutique Suites & Curated Stays</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl font-black text-white tracking-tight leading-tight">
-          Find Your Next <span className="text-gradient">Luxury Escape</span>
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-stone-900 tracking-tight leading-tight">
+          Spaces designed for rest, comfort & connection.
         </h1>
-        <p className="mt-4 text-slate-400 text-base sm:text-lg">
-          Explore curated rooms designed for comfort, luxury, and seamless reservations.
+        <p className="mt-4 text-stone-600 text-base sm:text-lg leading-relaxed">
+          Discover handpicked accommodations tailored for timeless comfort, seamless service, and peaceful getaways.
         </p>
       </div>
 
       {/* Notifications */}
       {bookingMessage && (
         <div
-          className={`mb-8 p-4 rounded-xl text-sm font-semibold flex items-center justify-between shadow-lg ${
+          className={`mb-8 p-4 rounded-xl text-sm font-semibold flex items-center justify-between shadow-xs ${
             bookingMessage.type === 'success'
-              ? 'bg-emerald-950/80 border border-emerald-500/50 text-emerald-200'
-              : 'bg-red-950/80 border border-red-500/50 text-red-200'
+              ? 'bg-emerald-50 border border-emerald-200 text-emerald-900'
+              : 'bg-rose-50 border border-rose-200 text-rose-900'
           }`}
         >
           <span>{bookingMessage.text}</span>
           <button
             onClick={() => setBookingMessage(null)}
-            className="text-xs uppercase opacity-75 hover:opacity-100 ml-4 cursor-pointer"
+            className="text-xs uppercase opacity-75 hover:opacity-100 ml-4 cursor-pointer font-bold"
           >
             Dismiss
           </button>
@@ -116,67 +116,67 @@ export const HomePage: React.FC = () => {
 
       {/* Rooms Grid */}
       {loading ? (
-        <div className="flex flex-col items-center justify-center py-20 text-slate-400">
-          <div className="w-10 h-10 border-4 border-sky-500/30 border-t-sky-400 rounded-full animate-spin mb-4" />
-          <p className="text-sm">Fetching available suites...</p>
+        <div className="flex flex-col items-center justify-center py-20 text-stone-500">
+          <div className="w-8 h-8 border-2 border-stone-200 border-t-stone-800 rounded-full animate-spin mb-4" />
+          <p className="text-sm font-medium">Loading available suites...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
           {rooms.map((room, index) => {
             const photoUrl = ROOM_IMAGES[index % ROOM_IMAGES.length];
             return (
               <div
                 key={room.id}
-                className="glass-card rounded-2xl overflow-hidden flex flex-col group"
+                className="hotel-card rounded-2xl overflow-hidden flex flex-col group"
               >
                 {/* Photo Preview */}
-                <div className="h-52 w-full relative overflow-hidden bg-slate-800">
+                <div className="h-56 w-full relative overflow-hidden bg-stone-100">
                   <img
                     src={photoUrl}
                     alt={room.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500 ease-out"
                     loading="lazy"
                   />
-                  <div className="absolute top-3 right-3 bg-slate-950/80 backdrop-blur-md px-3 py-1 rounded-full text-xs font-bold text-white border border-slate-700/50 shadow-md">
-                    $100 <span className="text-slate-400 font-normal">/ night</span>
+                  <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-xs px-3 py-1 rounded-full text-xs font-bold text-stone-900 border border-stone-200 shadow-xs">
+                    $100 <span className="text-stone-500 font-normal">/ night</span>
                   </div>
                 </div>
 
                 {/* Card Body */}
                 <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-amber-400 text-xs font-semibold tracking-wider">
-                        ★★★★★ 5.0
+                    <div className="flex items-center justify-between mb-2.5">
+                      <span className="text-amber-600 text-xs font-bold tracking-wider flex items-center gap-1">
+                        <span>★</span> 5.0 Rating
                       </span>
-                      <span className="badge-capacity text-xs font-medium px-2.5 py-0.5 rounded-full">
+                      <span className="badge-neutral text-xs font-medium px-2.5 py-0.5 rounded-full">
                         👥 Up to {room.capacity} Guests
                       </span>
                     </div>
 
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-sky-400 transition">
+                    <h3 className="text-xl font-bold text-stone-900 mb-2 group-hover:text-orange-950 transition">
                       {room.name}
                     </h3>
-                    <p className="text-slate-400 text-xs mb-4">
-                      Complimentary high-speed Wi-Fi, air conditioning, daily room service, and private ensuite bath.
+                    <p className="text-stone-500 text-xs leading-relaxed mb-4">
+                      Complimentary high-speed Wi-Fi, organic breakfast bar, air conditioning, and a private ensuite bath.
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-slate-800/80">
+                  <div className="pt-4 border-t border-stone-100">
                     {isAuthenticated ? (
                       <button
                         onClick={() => {
                           setSelectedRoom(room);
                           setBookingMessage(null);
                         }}
-                        className="w-full btn-gradient py-2.5 rounded-xl text-sm font-semibold cursor-pointer"
+                        className="w-full btn-primary py-2.5 rounded-xl text-sm font-semibold cursor-pointer"
                       >
                         Reserve Suite
                       </button>
                     ) : (
                       <Link
                         to="/login"
-                        className="w-full block text-center bg-slate-800 hover:bg-slate-700/90 text-slate-200 text-sm font-semibold py-2.5 rounded-xl border border-slate-700/60 transition"
+                        className="w-full block text-center bg-stone-100 hover:bg-stone-200 text-stone-800 text-sm font-semibold py-2.5 rounded-xl border border-stone-200 transition"
                       >
                         Sign in to Book
                       </Link>
@@ -191,18 +191,19 @@ export const HomePage: React.FC = () => {
 
       {/* Booking Modal */}
       {selectedRoom && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 animate-fade-in">
-          <div className="bg-slate-900 border border-slate-700/80 p-8 rounded-2xl max-w-md w-full text-white shadow-2xl">
-            <div className="flex items-center justify-between mb-6">
+        <div className="fixed inset-0 bg-stone-950/45 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white border border-stone-200 p-7 sm:p-8 rounded-2xl max-w-md w-full text-stone-900 shadow-2xl">
+            <div className="flex items-center justify-between mb-6 pb-3 border-b border-stone-100">
               <div>
-                <span className="text-xs font-bold text-sky-400 uppercase tracking-widest">
-                  Reservation
+                <span className="text-xs font-bold text-orange-700 uppercase tracking-wider">
+                  Reserve Accommodation
                 </span>
-                <h3 className="text-2xl font-black text-white">{selectedRoom.name}</h3>
+                <h3 className="text-2xl font-black text-stone-900">{selectedRoom.name}</h3>
               </div>
               <button
                 onClick={() => setSelectedRoom(null)}
-                className="text-slate-400 hover:text-white text-xl leading-none cursor-pointer"
+                className="text-stone-400 hover:text-stone-700 text-2xl leading-none cursor-pointer p-1"
+                aria-label="Close"
               >
                 ✕
               </button>
@@ -210,7 +211,7 @@ export const HomePage: React.FC = () => {
 
             <form onSubmit={handleBookingSubmit} className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
                   Check-In Date
                 </label>
                 <input
@@ -218,12 +219,12 @@ export const HomePage: React.FC = () => {
                   required
                   value={checkInDate}
                   onChange={(e) => setCheckInDate(e.target.value)}
-                  className="w-full input-modern rounded-xl px-4 py-2.5 text-sm"
+                  className="w-full input-clean rounded-xl px-4 py-2.5 text-sm"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
                   Check-Out Date
                 </label>
                 <input
@@ -231,28 +232,28 @@ export const HomePage: React.FC = () => {
                   required
                   value={checkOutDate}
                   onChange={(e) => setCheckOutDate(e.target.value)}
-                  className="w-full input-modern rounded-xl px-4 py-2.5 text-sm"
+                  className="w-full input-clean rounded-xl px-4 py-2.5 text-sm"
                 />
               </div>
 
               {calculateTotal() !== null && (
-                <div className="p-3 bg-sky-950/40 border border-sky-800/40 rounded-xl flex justify-between items-center text-sm">
-                  <span className="text-slate-300">Estimated Total:</span>
-                  <strong className="text-sky-400 text-base">${calculateTotal()}</strong>
+                <div className="p-3.5 bg-stone-50 border border-stone-200 rounded-xl flex justify-between items-center text-sm">
+                  <span className="text-stone-600">Estimated Total:</span>
+                  <strong className="text-stone-900 text-base font-bold">${calculateTotal()}</strong>
                 </div>
               )}
 
-              <div className="flex space-x-3 pt-4">
+              <div className="flex space-x-3 pt-3">
                 <button
                   type="button"
                   onClick={() => setSelectedRoom(null)}
-                  className="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 py-2.5 rounded-xl text-sm font-medium transition cursor-pointer"
+                  className="flex-1 btn-secondary py-2.5 rounded-xl text-sm font-medium transition cursor-pointer"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 btn-gradient py-2.5 rounded-xl text-sm font-semibold cursor-pointer"
+                  className="flex-1 btn-primary py-2.5 rounded-xl text-sm font-semibold cursor-pointer"
                 >
                   Confirm Stay
                 </button>

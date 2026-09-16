@@ -28,23 +28,25 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4">
-      <div className="max-w-md w-full glass-card p-10 rounded-3xl text-white shadow-2xl">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-8">
+      <div className="max-w-md w-full hotel-card p-8 sm:p-10 rounded-3xl text-stone-900 shadow-xl">
         <div className="text-center mb-8">
-          <span className="text-3xl">🔑</span>
-          <h2 className="text-3xl font-black text-white mt-2 tracking-tight">Welcome Back</h2>
-          <p className="text-slate-400 text-sm mt-1">Sign in to manage your reservations</p>
+          <div className="w-12 h-12 rounded-2xl bg-stone-100 border border-stone-200 flex items-center justify-center text-xl mx-auto mb-3">
+            🗝️
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-bold text-stone-900 tracking-tight">Welcome Back</h2>
+          <p className="text-stone-500 text-sm mt-1">Sign in to manage your reservations and profile</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-950/80 border border-red-500/50 rounded-xl text-red-200 text-sm font-medium">
+          <div className="mb-6 p-3.5 bg-rose-50 border border-rose-200 rounded-xl text-rose-800 text-sm font-medium">
             {error}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
               Email Address
             </label>
             <input
@@ -52,13 +54,13 @@ export function LoginPage() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full input-modern rounded-xl px-4 py-3 text-sm placeholder-slate-500"
+              className="w-full input-clean rounded-xl px-4 py-2.5 sm:py-3 text-sm placeholder-stone-400"
               placeholder="name@example.com"
             />
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">
+            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
               Password
             </label>
             <input
@@ -66,7 +68,7 @@ export function LoginPage() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full input-modern rounded-xl px-4 py-3 text-sm placeholder-slate-500"
+              className="w-full input-clean rounded-xl px-4 py-2.5 sm:py-3 text-sm placeholder-stone-400"
               placeholder="••••••••"
             />
           </div>
@@ -74,15 +76,15 @@ export function LoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full btn-gradient py-3 rounded-xl text-sm font-bold tracking-wide transition disabled:opacity-50 cursor-pointer shadow-lg"
+            className="w-full btn-primary py-3 rounded-xl text-sm font-semibold tracking-wide transition disabled:opacity-50 cursor-pointer shadow-xs mt-2"
           >
-            {loading ? 'Authenticating...' : 'Sign In'}
+            {loading ? 'Signing in...' : 'Sign In'}
           </button>
         </form>
 
-        <p className="mt-8 text-center text-xs text-slate-400">
+        <p className="mt-7 text-center text-xs text-stone-500">
           Don't have an account yet?{' '}
-          <Link to="/register" className="text-sky-400 font-semibold hover:underline">
+          <Link to="/register" className="text-stone-900 font-semibold hover:underline">
             Create an account
           </Link>
         </p>
