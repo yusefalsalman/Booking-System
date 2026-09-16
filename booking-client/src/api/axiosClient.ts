@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 1. Create the Axios instance with your ASP.NET Core base URL
 const axiosClient = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
+  baseURL: (import.meta.env.VITE_API_BASE_URL || 'https://booking-system-u0k8.onrender.com') + '/api',
   headers: {
     'Content-Type': 'application/json',
   },
