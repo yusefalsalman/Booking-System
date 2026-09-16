@@ -7,6 +7,9 @@ using Microsoft.EntityFrameworkCore; // use SQL Server provider for Entity Frame
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 
+// Set the switch to enable legacy timestamp behavior for Npgsql, which is the PostgreSQL database provider for Entity Framework Core. This is necessary for compatibility with older timestamp formats.
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 // create the WebApplicationBuilder instance, which is used to configure the application and its services
 var builder = WebApplication.CreateBuilder(args);
 
