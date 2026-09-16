@@ -92,8 +92,8 @@ builder.Services.AddAuthentication(options =>
 
 
 // Build the WebApplication instance, which represents the configured application and is used to handle incoming HTTP requests
-var app = builder.Build();
-
+// Build the WebApplication instance
+WebApplication app = builder.Build();
 
 // Enables Swagger only while developing locally
 if (app.Environment.IsDevelopment())
@@ -116,3 +116,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.Run();
