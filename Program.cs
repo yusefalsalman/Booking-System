@@ -48,11 +48,15 @@ builder.Services.AddSwaggerGen(options =>
 // Add CORS policy to allow requests from any origin, method, and header. This is useful for enabling cross-origin requests from different domains or ports.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", policy =>
+    options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http://localhost:5173", "http://localhost:3000", "http://localhost:3001")
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "https://yousefbookingsystem.netlify.app"
+              )
               .AllowAnyHeader()
-              .AllowAnyMethod();
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
 
@@ -102,14 +106,13 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-app.UseHttpsRedirection();
+app.UseRouting();
+
+app.UseCors("AllowFrontend");
+
 app.UseMiddleware<GlobalExceptionMiddleware>();
-app.UseCors("AllowReactApp"); // Apply the CORS policy to allow requests from the specified origins
+
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Map the controllers to handle incoming HTTP requests
 app.MapControllers();
-
-// Run the application
-app.Run();
