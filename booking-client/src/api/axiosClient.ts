@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 1. Create the Axios instance with your ASP.NET Core base URL
 const axiosClient = axios.create({
-  baseURL: 'http://localhost:5079/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000',
   headers: {
     'Content-Type': 'application/json',
   },
