@@ -89,7 +89,13 @@ public class BookingService : IBookingService
             return (false, "Check-out date must be after check-in date.", null);
         }
 
-        // Business Rule 3: Prevent Double Booking (Overlap Check)
+        // Business Rule 3: Dates validation
+        if (request.CheckInDate < DateTime.UtcNow.Date)
+        {
+            return (false, "The Booking Must be in Future.", null);
+        }
+
+        // Business Rule 4: Prevent Double Booking (Overlap Check)
         var isOverlapping = await _context.Bookings.AnyAsync(b =>
             request.RoomId == b.RoomId &&
             request.CheckInDate < b.CheckOutDate &&
@@ -100,7 +106,7 @@ public class BookingService : IBookingService
             return (false, "This room is already reserved for the selected dates.", null);
         }
 
-        // Business Rule 4: Compute Total Price based on whole calendar days
+        // Business Rule 5: Compute Total Price based on whole calendar days
         var nights = (request.CheckOutDate.Date - request.CheckInDate.Date).Days;
         if (nights < 1) nights = 1;
         var totalPrice = nights * PricePerNight;
