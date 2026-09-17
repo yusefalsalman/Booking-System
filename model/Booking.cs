@@ -3,7 +3,9 @@ namespace Booking.Api.Model;
 public class Booking
 {
     public int Id { get; set; }
-    public string CustomerName { get; set; } = string.Empty;
+
+    public int CustomerId { get; set; }
+
     public DateTime CheckInDate { get; set; }
     public DateTime CheckOutDate { get; set; }
     public decimal TotalPrice { get; set; }

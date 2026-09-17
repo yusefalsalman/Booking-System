@@ -20,7 +20,8 @@ public class BookingService : IBookingService
             .Select(b => new BookingResponse
             {
                 Id = b.Id,
-                CustomerName = b.CustomerName,
+                CustomerId = b.CustomerId,
+                RoomName = b.Room.Name,
                 CheckInDate = b.CheckInDate,
                 CheckOutDate = b.CheckOutDate,
                 TotalPrice = b.TotalPrice,
@@ -31,18 +32,19 @@ public class BookingService : IBookingService
 
     public async Task<BookingResponse?> GetBookingByIdAsync(int id)
     {
-        var booking = await _context.Bookings.FindAsync(id);
-        if (booking is null) return null;
-
-        return new BookingResponse
-        {
-            Id = booking.Id,
-            CustomerName = booking.CustomerName,
-            CheckInDate = booking.CheckInDate,
-            CheckOutDate = booking.CheckOutDate,
-            TotalPrice = booking.TotalPrice,
-            RoomId = booking.RoomId
-        };
+        return await _context.Bookings
+            .Where(b => b.Id == id)
+            .Select(b => new BookingResponse
+            {
+                Id = b.Id,
+                CustomerId = b.CustomerId,
+                RoomName = b.Room.Name,
+                CheckInDate = b.CheckInDate,
+                CheckOutDate = b.CheckOutDate,
+                TotalPrice = b.TotalPrice,
+                RoomId = b.RoomId
+            })
+            .FirstOrDefaultAsync();
     }
 
     public async Task<List<BookingResponse>> GetBookingsByRoomIdAsync(int roomId)
@@ -52,7 +54,8 @@ public class BookingService : IBookingService
             .Select(b => new BookingResponse
             {
                 Id = b.Id,
-                CustomerName = b.CustomerName,
+                CustomerId = b.CustomerId,
+                RoomName = b.Room.Name,
                 CheckInDate = b.CheckInDate,
                 CheckOutDate = b.CheckOutDate,
                 TotalPrice = b.TotalPrice,
@@ -61,11 +64,21 @@ public class BookingService : IBookingService
             .ToListAsync();
     }
 
-    public async Task<(bool Success, string? ErrorMessage, BookingResponse? Booking)> CreateBookingAsync(CreateBookingRequest request)
+    public async Task<bool> CancelBookingAsync(int id)
+    {
+        var booking = await _context.Bookings.FindAsync(id);
+        if (booking is null) return false;
+
+        _context.Bookings.Remove(booking);
+        await _context.SaveChangesAsync();
+        return true;
+    }
+    public async Task<(bool Success, string? ErrorMessage, BookingResponse? Booking)> CreateBookingAsync(CreateBookingRequest request, int newID)
     {
         // Business Rule 1: Check if room exists
-        var roomExists = await _context.Rooms.AnyAsync(r => r.Id == request.RoomId);
-        if (!roomExists)
+        var room = await _context.Rooms.FindAsync(request.RoomId);
+
+        if (room is null)
         {
             return (false, $"Room with ID {request.RoomId} does not exist.", null);
         }
@@ -87,13 +100,14 @@ public class BookingService : IBookingService
             return (false, "This room is already reserved for the selected dates.", null);
         }
 
-        // Business Rule 4: Compute Total Price
-        var nights = (request.CheckOutDate - request.CheckInDate).Days;
+        // Business Rule 4: Compute Total Price based on whole calendar days
+        var nights = (request.CheckOutDate.Date - request.CheckInDate.Date).Days;
+        if (nights < 1) nights = 1;
         var totalPrice = nights * PricePerNight;
 
         var newBooking = new Model.Booking
         {
-            CustomerName = request.CustomerName,
+            CustomerId = newID,
             CheckInDate = request.CheckInDate,
             CheckOutDate = request.CheckOutDate,
             TotalPrice = totalPrice,
@@ -106,7 +120,8 @@ public class BookingService : IBookingService
         var response = new BookingResponse
         {
             Id = newBooking.Id,
-            CustomerName = newBooking.CustomerName,
+            CustomerId = newBooking.CustomerId,
+            RoomName = room.Name,
             CheckInDate = newBooking.CheckInDate,
             CheckOutDate = newBooking.CheckOutDate,
             TotalPrice = newBooking.TotalPrice,
@@ -115,14 +130,22 @@ public class BookingService : IBookingService
         return (true, null, response);
     }
 
-    public async Task<bool> CancelBookingAsync(int id)
+    public async Task<List<BookingResponse>> GetBookingsByCustomerIDAsync(int id)
     {
-        var booking = await _context.Bookings.FindAsync(id);
-        if (booking is null) return false;
-
-        _context.Bookings.Remove(booking);
-        await _context.SaveChangesAsync();
-        return true;
+        return await _context.Bookings
+            .Where(b => b.CustomerId == id)
+            .Select(b => new BookingResponse
+            {
+                Id = b.Id,
+                CustomerId = b.CustomerId,
+                RoomName = b.Room.Name,
+                CheckInDate = b.CheckInDate,
+                CheckOutDate = b.CheckOutDate,
+                TotalPrice = b.TotalPrice,
+                RoomId = b.RoomId
+            })
+            .ToListAsync();
     }
-}
 
+
+}

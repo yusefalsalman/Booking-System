@@ -57,7 +57,6 @@ export const HomePage: React.FC = () => {
 
     try {
       const result = await bookingService.create({
-        customerName: user.fullName,
         roomId: selectedRoom.id,
         checkInDate,
         checkOutDate,

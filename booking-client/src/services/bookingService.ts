@@ -21,4 +21,9 @@ export const bookingService = {
   async cancel(id: number): Promise<void> {
     await axiosClient.delete(`/bookings/${id}`);
   },
+  
+async getMyBookings(): Promise<Booking[]> {
+  const response = await axiosClient.get<Booking[]>('/bookings/my-bookings');
+  return response.data;
+},
 };

@@ -33,6 +33,12 @@ export const Navbar: React.FC = () => {
             Explore Suites
           </Link>
 
+          {isAuthenticated && (
+            <Link to="/my-bookings" className="text-sm font-medium text-stone-600 hover:text-stone-900">
+              My Bookings
+            </Link>
+          )}
+          
           {isAdmin && (
             <Link
               to="/admin"
@@ -101,6 +107,16 @@ export const Navbar: React.FC = () => {
           >
             Explore Suites
           </Link>
+
+          {isAuthenticated && (
+            <Link
+              to="/my-bookings"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-3 py-2 rounded-lg text-sm font-medium text-stone-800 hover:bg-stone-50"
+            >
+              My Bookings
+            </Link>
+          )}
 
           {isAdmin && (
             <Link

@@ -12,18 +12,18 @@ export interface CreateRoomRequest {
 
 export interface Booking {
   id: number;
-  customerName: string;
+  customerId: number;
+  roomId: number;
+  roomName: string;
   checkInDate: string;
   checkOutDate: string;
   totalPrice: number;
-  roomId: number;
 }
 
 export interface CreateBookingRequest {
-  customerName: string;
+  roomId: number;
   checkInDate: string;
   checkOutDate: string;
-  roomId: number;
 }
 
 // Matches Auth DTOs in .NET

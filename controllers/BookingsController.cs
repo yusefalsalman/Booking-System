@@ -42,10 +42,32 @@ public class BookingsController : ControllerBase
         return Ok(bookings);
     }
 
+    [Authorize] // This endpoint requires a valid JWT token
+    [HttpGet("my-bookings")]
+    public async Task<IActionResult> GetMyBookings()
+    {
+        // this endpoint is protected, so we can safely extract the user ID from the JWT token
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var targetCustomerId))
+        {
+            return Unauthorized(new { message = "Invalid user token." });
+        }
+
+        var bookings = await _bookingService.GetBookingsByCustomerIDAsync(targetCustomerId);
+        return Ok(bookings);
+    }
+
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(CreateBookingRequest request)
     {
-        var result = await _bookingService.CreateBookingAsync(request);
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (!int.TryParse(userIdClaim, out var customerId))
+        {
+            return Unauthorized(new { message = "User not authenticated or invalid token." });
+        }
+
+        var result = await _bookingService.CreateBookingAsync(request, customerId);
 
         if (!result.Success)
         {
