@@ -18,7 +18,7 @@ public class GeminiService : IAIService
         _httpClient = httpClient;
         _context = context;
         _apiKey = config["Gemini:ApiKey"] ?? throw new ArgumentNullException(nameof(config), "Gemini:ApiKey is missing.");
-        _model = config["Gemini:Model"] ?? "gemini-1.5-flash";
+        _model = config["Gemini:Model"] ?? "gemini-3.6-flash";
     }
 
     public async Task<AIRecommendationResponse> GetRoomRecommendationAsync(string userPrompt)
