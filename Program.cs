@@ -72,7 +72,10 @@ builder.Services.AddHttpClient<IAIService, GeminiService>();
 
 // Configure JWT authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
-var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+var keyString = jwtSettings["Key"] ?? "ThisIsASecretKeyForBookingAppThatIsAtLeast32BytesLong!";
+var secretKey = Encoding.UTF8.GetBytes(keyString);
+var jwtIssuer = jwtSettings["Issuer"] ?? "BookingApi";
+var jwtAudience = jwtSettings["Audience"] ?? "BookingApp";
 
 builder.Services.AddAuthentication(options =>
 {
@@ -87,8 +90,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtSettings["Issuer"],
-        ValidAudience = jwtSettings["Audience"],
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
         ClockSkew = TimeSpan.FromMinutes(30), // Allow a 30-minute clock skew for token expiration validation1
         IssuerSigningKey = new SymmetricSecurityKey(secretKey)
     };

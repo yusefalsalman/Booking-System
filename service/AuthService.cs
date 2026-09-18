@@ -87,7 +87,11 @@ public class AuthService : IAuthService
     private string GenerateJwtToken(User user)
     {
         var jwtSettings = _configuration.GetSection("Jwt");
-        var secretKey = Encoding.UTF8.GetBytes(jwtSettings["Key"]!);
+        var keyStr = jwtSettings["Key"] ?? "ThisIsASecretKeyForBookingAppThatIsAtLeast32BytesLong!";
+        var secretKey = Encoding.UTF8.GetBytes(keyStr);
+        var durationMinutes = double.TryParse(jwtSettings["DurationInMinutes"], out var d) ? d : 60;
+        var issuer = jwtSettings["Issuer"] ?? "BookingApi";
+        var audience = jwtSettings["Audience"] ?? "BookingApp";
 
         // Claims: Data embedded securely inside the token that React & ASP.NET can read
         var claims = new List<Claim>
@@ -101,9 +105,9 @@ public class AuthService : IAuthService
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddMinutes(double.Parse(jwtSettings["DurationInMinutes"]!)),
-            Issuer = jwtSettings["Issuer"],
-            Audience = jwtSettings["Audience"],
+            Expires = DateTime.UtcNow.AddMinutes(durationMinutes),
+            Issuer = issuer,
+            Audience = audience,
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(secretKey),
                 SecurityAlgorithms.HmacSha256Signature)
