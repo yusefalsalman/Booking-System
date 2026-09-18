@@ -1,4 +1,4 @@
-using System.Text;
+using System.Net.Http.Json;
 using System.Text.Json;
 using Booking.Api.Data;
 using Booking.Api.Model;
@@ -17,7 +17,7 @@ public class GeminiService : IAIService
     {
         _httpClient = httpClient;
         _context = context;
-        _apiKey = config["Gemini:ApiKey"] ?? throw new ArgumentNullException("Gemini:ApiKey is missing.");
+        _apiKey = config["Gemini:ApiKey"] ?? throw new ArgumentNullException(nameof(config), "Gemini:ApiKey is missing.");
         _model = config["Gemini:Model"] ?? "gemini-1.5-flash";
     }
 
@@ -71,10 +71,11 @@ RULES:
             }
         };
 
-        var content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
+        // استخدام v1beta هو المسار المعتمد لموديل gemini-1.5-flash
         var endpoint = $"https://generativelanguage.googleapis.com/v1beta/models/{_model}:generateContent?key={_apiKey}";
 
-        var response = await _httpClient.PostAsync(endpoint, content);
+        var response = await _httpClient.PostAsJsonAsync(endpoint, requestBody);
+
         if (!response.IsSuccessStatusCode)
         {
             var err = await response.Content.ReadAsStringAsync();
@@ -83,6 +84,7 @@ RULES:
 
         var json = await response.Content.ReadAsStringAsync();
         using var doc = JsonDocument.Parse(json);
+
         var rawText = doc.RootElement
             .GetProperty("candidates")[0]
             .GetProperty("content")
@@ -91,6 +93,7 @@ RULES:
             .GetString();
 
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
         return JsonSerializer.Deserialize<AIRecommendationResponse>(rawText!, options)
                ?? new AIRecommendationResponse { Explanation = "Could not parse recommendation." };
     }
