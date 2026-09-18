@@ -15,6 +15,13 @@ export const AdminDashboard: React.FC = () => {
   const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
+  // State for Edit Room Modal Dialog
+  const [roomToEdit, setRoomToEdit] = useState<Room | null>(null);
+  const [editName, setEditName] = useState('');
+  const [editCapacity, setEditCapacity] = useState<number>(2);
+  const [editPricePerNight, setEditPricePerNight] = useState<number>(100);
+  const [editLoading, setEditLoading] = useState(false);
+
   // State for Room Bookings Modal Dialog
   const [selectedRoomForBookings, setSelectedRoomForBookings] = useState<Room | null>(null);
   const [roomBookings, setRoomBookings] = useState<Booking[]>([]);
@@ -55,6 +62,42 @@ export const AdminDashboard: React.FC = () => {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  // Open Edit Modal with selected room's data
+  const handleOpenEdit = (room: Room) => {
+    setRoomToEdit(room);
+    setEditName(room.name);
+    setEditCapacity(room.capacity);
+    setEditPricePerNight(room.pricePerNight || 100);
+  };
+
+  // Save changes via PUT /api/rooms/{id}
+  const handleSaveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!roomToEdit) return;
+    setEditLoading(true);
+    setMessage(null);
+
+    try {
+      const updated = await roomService.update(roomToEdit.id, {
+        name: editName,
+        capacity: editCapacity,
+        pricePerNight: editPricePerNight,
+      });
+
+      setRooms((prev) => prev.map((r) => (r.id === updated.id ? updated : r)));
+      setMessage({ type: 'success', text: `✨ Suite "${updated.name}" updated successfully!` });
+      setRoomToEdit(null);
+    } catch (err: unknown) {
+      const axiosError = err as { response?: { data?: { message?: string } } };
+      setMessage({
+        type: 'error',
+        text: axiosError.response?.data?.message || 'Failed to update suite. Please try again.',
+      });
+    } finally {
+      setEditLoading(false);
     }
   };
 
@@ -124,7 +167,7 @@ export const AdminDashboard: React.FC = () => {
           Suite Inventory & Management
         </h1>
         <p className="text-stone-600 text-sm mt-2 max-w-xl leading-relaxed">
-          Configure guest capacity, publish new hotel rooms, and manage active accommodations.
+          Configure guest capacity, publish new hotel rooms, edit pricing, and manage live accommodations.
         </p>
       </div>
 
@@ -252,12 +295,18 @@ export const AdminDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <div className="flex items-center gap-2 w-full sm:w-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto" onClick={(e) => e.stopPropagation()}>
                 <button
                   onClick={() => handleViewRoomBookings(room)}
                   className="flex-1 sm:flex-initial text-xs bg-stone-100 hover:bg-stone-200 text-stone-800 border border-stone-200 px-3.5 py-2 rounded-xl transition font-medium cursor-pointer"
                 >
                   📋 Bookings
+                </button>
+                <button
+                  onClick={() => handleOpenEdit(room)}
+                  className="flex-1 sm:flex-initial text-xs bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 px-3.5 py-2 rounded-xl transition font-semibold cursor-pointer"
+                >
+                  ✏️ Edit
                 </button>
                 <button
                   onClick={() => setRoomToDelete(room)}
@@ -270,6 +319,98 @@ export const AdminDashboard: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* ============================================================ */}
+      {/* EDIT ROOM MODAL DIALOG */}
+      {/* ============================================================ */}
+      {roomToEdit && (
+        <div className="fixed inset-0 bg-stone-950/45 backdrop-blur-xs flex items-center justify-center p-4 z-50 animate-fade-in">
+          <div className="bg-white border border-stone-200 p-6 sm:p-8 rounded-2xl sm:rounded-3xl max-w-lg w-full text-stone-900 shadow-2xl">
+            <div className="flex items-center justify-between pb-4 mb-5 border-b border-stone-100">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-lg shrink-0">
+                  ✏️
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-stone-900">Edit Suite #{roomToEdit.id}</h3>
+                  <p className="text-xs text-stone-500">Update name, capacity, and nightly rate</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setRoomToEdit(null)}
+                className="text-stone-400 hover:text-stone-700 text-2xl leading-none p-1 cursor-pointer"
+                aria-label="Close"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveEdit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                  Suite Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                  className="w-full input-clean rounded-xl px-4 py-2.5 text-sm"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                    Guest Capacity
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    max={20}
+                    required
+                    value={editCapacity}
+                    onChange={(e) => setEditCapacity(Number(e.target.value))}
+                    className="w-full input-clean rounded-xl px-4 py-2.5 text-sm"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-1.5">
+                    Price / Night ($)
+                  </label>
+                  <input
+                    type="number"
+                    min={1}
+                    required
+                    value={editPricePerNight}
+                    onChange={(e) => setEditPricePerNight(Number(e.target.value))}
+                    className="w-full input-clean rounded-xl px-4 py-2.5 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="flex space-x-3 pt-4">
+                <button
+                  type="button"
+                  disabled={editLoading}
+                  onClick={() => setRoomToEdit(null)}
+                  className="flex-1 btn-secondary py-2.5 rounded-xl text-sm font-semibold transition cursor-pointer disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={editLoading}
+                  className="flex-1 btn-primary py-2.5 rounded-xl text-sm font-semibold transition cursor-pointer shadow-xs disabled:opacity-50"
+                >
+                  {editLoading ? 'Saving...' : 'Save Changes'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* ============================================================ */}
       {/* ROOM BOOKINGS MODAL DIALOG */}

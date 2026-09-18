@@ -22,4 +22,10 @@ export const roomService = {
     // Requires Admin token
     await axiosClient.delete(`/rooms/${id}`);
   },
+
+  async update(id: number, data: CreateRoomRequest): Promise<Room> {
+    // Requires Admin token
+    const response = await axiosClient.put<Room>(`/rooms/${id}`, data);
+    return response.data;
+  },
 };
