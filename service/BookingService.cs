@@ -7,8 +7,6 @@ namespace Booking.Api.Services;
 public class BookingService : IBookingService
 {
     private readonly BookingDbContext _context;
-    private const decimal PricePerNight = 100m; // Example fixed rate per night
-
     public BookingService(BookingDbContext context)
     {
         _context = context;
@@ -109,7 +107,7 @@ public class BookingService : IBookingService
         // Business Rule 5: Compute Total Price based on whole calendar days
         var nights = (request.CheckOutDate.Date - request.CheckInDate.Date).Days;
         if (nights < 1) nights = 1;
-        var totalPrice = nights * PricePerNight;
+        var totalPrice = nights * room.PricePerNight;
 
         var newBooking = new Model.Booking
         {

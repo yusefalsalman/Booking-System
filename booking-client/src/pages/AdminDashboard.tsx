@@ -7,6 +7,7 @@ export const AdminDashboard: React.FC = () => {
   const [rooms, setRooms] = useState<Room[]>([]);
   const [name, setName] = useState('');
   const [capacity, setCapacity] = useState<number>(2);
+  const [pricePerNight, setPricePerNight] = useState<number>(100);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -40,10 +41,11 @@ export const AdminDashboard: React.FC = () => {
     setLoading(true);
 
     try {
-      await roomService.create({ name, capacity });
+      await roomService.create({ name, capacity, pricePerNight });
       setMessage({ type: 'success', text: `Suite "${name}" added to live inventory!` });
       setName('');
       setCapacity(2);
+      setPricePerNight(100);
       await loadRooms();
     } catch (err: unknown) {
       const axiosError = err as { response?: { data?: { message?: string } } };
@@ -151,7 +153,7 @@ export const AdminDashboard: React.FC = () => {
           <span>➕</span>
           <span>Create New Suite</span>
         </h2>
-        <form onSubmit={handleCreateRoom} className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+        <form onSubmit={handleCreateRoom} className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-5">
           <div className="md:col-span-2">
             <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
               Suite Name
@@ -181,7 +183,22 @@ export const AdminDashboard: React.FC = () => {
             />
           </div>
 
-          <div className="md:col-span-3 pt-2">
+          <div>
+            <label className="block text-xs font-semibold text-stone-700 uppercase tracking-wider mb-2">
+              Price / Night ($)
+            </label>
+            <input
+              type="number"
+              min={1}
+              required
+              value={pricePerNight}
+              onChange={(e) => setPricePerNight(Number(e.target.value))}
+              className="w-full input-clean rounded-xl px-4 py-2.5 sm:py-3 text-sm"
+              placeholder="100"
+            />
+          </div>
+
+          <div className="md:col-span-4 pt-2">
             <button
               type="submit"
               disabled={loading}
@@ -230,7 +247,7 @@ export const AdminDashboard: React.FC = () => {
                     <span>•</span>
                     <span className="text-stone-700 font-medium">👥 Max {room.capacity} Guests</span>
                     <span>•</span>
-                    <span className="text-stone-700 font-semibold">$100/night</span>
+                    <span className="text-stone-700 font-semibold">${room.pricePerNight || 100}/night</span>
                   </div>
                 </div>
               </div>
@@ -274,7 +291,7 @@ export const AdminDashboard: React.FC = () => {
                     </span>
                   </div>
                   <p className="text-xs text-stone-500 mt-0.5">
-                    Live Bookings • Max {selectedRoomForBookings.capacity} Guests • $100/night
+                    Live Bookings • Max {selectedRoomForBookings.capacity} Guests • ${selectedRoomForBookings.pricePerNight || 100}/night
                   </p>
                 </div>
               </div>

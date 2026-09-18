@@ -21,7 +21,8 @@ public class RoomService : IRoomService
             {
                 Id = r.Id,
                 Name = r.Name,
-                Capacity = r.Capacity
+                Capacity = r.Capacity,
+                PricePerNight = r.PricePerNight
             })
             .ToListAsync();
     }
@@ -35,7 +36,8 @@ public class RoomService : IRoomService
         {
             Id = room.Id,
             Name = room.Name,
-            Capacity = room.Capacity
+            Capacity = room.Capacity,
+            PricePerNight = room.PricePerNight
         };
     }
 
@@ -44,7 +46,8 @@ public class RoomService : IRoomService
         var newRoom = new Room
         {
             Name = request.Name,
-            Capacity = request.Capacity
+            Capacity = request.Capacity,
+            PricePerNight = request.PricePerNight
         };
 
         _context.Rooms.Add(newRoom);
@@ -54,7 +57,8 @@ public class RoomService : IRoomService
         {
             Id = newRoom.Id,
             Name = newRoom.Name,
-            Capacity = newRoom.Capacity
+            Capacity = newRoom.Capacity,
+            PricePerNight = newRoom.PricePerNight
         };
     }
 
@@ -65,6 +69,7 @@ public class RoomService : IRoomService
 
         room.Name = request.Name;
         room.Capacity = request.Capacity;
+        room.PricePerNight = request.PricePerNight;
 
         await _context.SaveChangesAsync();
 
@@ -72,7 +77,8 @@ public class RoomService : IRoomService
         {
             Id = room.Id,
             Name = room.Name,
-            Capacity = room.Capacity
+            Capacity = room.Capacity,
+            PricePerNight = room.PricePerNight
         };
     }
 

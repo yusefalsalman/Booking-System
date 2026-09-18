@@ -3,11 +3,13 @@ export interface Room {
   id: number;
   name: string;
   capacity: number;
+  pricePerNight: number;
 }
 
 export interface CreateRoomRequest {
   name: string;
   capacity: number;
+  pricePerNight: number;
 }
 
 export interface Booking {

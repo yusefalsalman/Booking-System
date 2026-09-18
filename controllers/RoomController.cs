@@ -77,21 +77,3 @@ public class RoomsController : ControllerBase
         return NotFound(new { message = $"Room with ID {id} not found." });
     }
 }
-
-// [HttpGet("{roomId:int}/bookings")]
-// public async Task<IActionResult> GetBookingsForRoom(int roomId)
-// {
-//     var bookings = await _context.Bookings
-//         .Where(b => b.RoomId == roomId) // Filter bookings by the specified roomId
-//         .Select(b => new // Project to a DTO or anonymous type to avoid circular references
-//         {
-//             // Select only the necessary properties to return
-//             b.Id,
-//             b.CustomerName,
-//             b.CheckInDate,
-//             b.CheckOutDate,
-//             b.TotalPrice,
-//         })
-//         .ToListAsync();
-//     return Ok(bookings);
-// }

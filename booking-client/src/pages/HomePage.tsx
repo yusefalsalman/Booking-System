@@ -41,12 +41,13 @@ export const HomePage: React.FC = () => {
   }, []);
 
   const calculateTotal = () => {
-    if (!checkInDate || !checkOutDate) return null;
+    if (!checkInDate || !checkOutDate || !selectedRoom) return null;
     const start = new Date(checkInDate);
     const end = new Date(checkOutDate);
     const diffTime = end.getTime() - start.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays > 0 ? diffDays * 100 : null;
+    const rate = selectedRoom.pricePerNight ?? selectedRoom.pricePerNight ?? 100;
+    return diffDays > 0 ? diffDays * rate : null;
   };
 
   const handleBookingSubmit = async (e: React.FormEvent) => {
@@ -137,7 +138,7 @@ export const HomePage: React.FC = () => {
                     loading="lazy"
                   />
                   <div className="absolute top-3.5 right-3.5 bg-white/95 backdrop-blur-xs px-3 py-1 rounded-full text-xs font-bold text-stone-900 border border-stone-200 shadow-xs">
-                    $100 <span className="text-stone-500 font-normal">/ night</span>
+                    ${room.pricePerNight || 100} <span className="text-stone-500 font-normal">/ night</span>
                   </div>
                 </div>
 
@@ -195,7 +196,7 @@ export const HomePage: React.FC = () => {
             <div className="flex items-center justify-between mb-6 pb-3 border-b border-stone-100">
               <div>
                 <span className="text-xs font-bold text-orange-700 uppercase tracking-wider">
-                  Reserve Accommodation
+                  Reserve Accommodation • ${selectedRoom.pricePerNight || 100} / night
                 </span>
                 <h3 className="text-2xl font-black text-stone-900">{selectedRoom.name}</h3>
               </div>

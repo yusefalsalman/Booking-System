@@ -11,4 +11,8 @@ public class CreateRoomRequest
     [Required(ErrorMessage = "Capacity is required")]
     [Range(1, int.MaxValue, ErrorMessage = "Capacity must be a positive integer")]
     public int Capacity { get; set; }
+
+    [Required(ErrorMessage = "Price is required")]
+    [Range(1, int.MaxValue, ErrorMessage = "Price must be a positive integer")]
+    public decimal PricePerNight { get; set; }
 }
