@@ -7,6 +7,7 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { MyBookingsPage } from './pages/MyBookingPage';
+import { AIChatWidget } from './components/AIChatWidget';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/my-bookings" element={<ProtectedRoute><MyBookingsPage /></ProtectedRoute>}/>
             </Routes>
           </main>
+          <AIChatWidget />
         </div>
       </BrowserRouter>
     </AuthProvider>

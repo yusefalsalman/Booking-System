@@ -121,7 +121,7 @@ export const HomePage: React.FC = () => {
           <p className="text-sm font-medium">Loading available suites...</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        <div id="available-rooms" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
           {rooms.map((room, index) => {
             const photoUrl = ROOM_IMAGES[index % ROOM_IMAGES.length];
             return (

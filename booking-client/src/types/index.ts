@@ -47,3 +47,14 @@ export interface AuthResponse {
   fullName: string;
   role: string;
 }
+
+export interface AIRecommendationRequest {
+  prompt: string;
+}
+
+export interface AIRecommendationResponse {
+  recommendedRoomId: number | null;
+  roomName: string;
+  explanation: string;
+  pricePerNight: number;
+}

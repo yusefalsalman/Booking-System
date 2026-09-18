@@ -67,6 +67,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddScoped<IRoomService, RoomService>();
 builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddHttpClient<IAIService, GeminiService>();
 /* ------------------------------ === Builder services === ------------------------------*/
 
 // Configure JWT authentication
